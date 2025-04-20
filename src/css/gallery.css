@@ -1,0 +1,46 @@
+form {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+  }
+  
+  ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    gap: 24px;
+  }
+  
+  .gallery {
+    box-sizing: border-box;
+  }
+  
+  .gallery-item {
+    margin: 0;
+  }
+  
+  .gallery-link {
+    text-decoration: none;
+  }
+  
+  .gallery-image {
+    width: 360px;
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  
+  .modal {
+    background: rgba(46, 47, 66, 0.8);
+  }
+  
+  .captions {
+    width: 360px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
