@@ -38,17 +38,17 @@ export function clearGallery() {
 }
 
 export function showLoader() {
-    loader.classList.add('hidden');
-}
-
-export function hideLoader() {
     loader.classList.remove('hidden');
 }
 
+export function hideLoader() {
+    loader.classList.add('hidden');
+}
+
 export function showLoadMoreButton(){
-    loadMoreButton.classList.add('hidden');
+    loadMoreButton.classList.remove('hidden');
 }
 
 export function hideLoadMoreButton(){
-    loadMoreButton.classList.remove('hidden');
+    loadMoreButton.classList.add('hidden');
 }

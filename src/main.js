@@ -15,9 +15,9 @@ const loadMoreButton = document.querySelector('.load-more-button');
 form.addEventListener('submit', async event => {
     event.preventDefault();
     
-    const query = form.elements['search-text'].value.trim();
+    const searchQuery = form.elements['search-text'].value.trim();
 
-    if (query === '') {
+    if (searchQuery === '') {
         iziToast.error({
             title: 'Error',
             message: 'Please enter search parameters!',
@@ -25,7 +25,6 @@ form.addEventListener('submit', async event => {
         return;
     }
     
-    searchQuery = query;
     currentPage = 1;
 
     clearGallery();
@@ -45,7 +44,7 @@ form.addEventListener('submit', async event => {
         
         createGallery(data.hits);
             
-        if (currentPage*15 < data.totalHits){
+        if (currentPage * 15 < data.totalHits){
             showLoadMoreButton();
         }else{
             hideLoadMoreButton();
@@ -73,24 +72,46 @@ loadMoreButton.addEventListener('click', async () => {
     showLoader();
 
     try {
-        const data = await getImagesByQuery(query, currentPage);
+        const data = await getImagesByQuery(searchQuery, currentPage);
         
-        createGallery(data.hits);
-        
-        const imageSize = document.querySelector('.gallery-image').getBoundingClientRect().height;
-
-        window.scrollBy({
-            top: imageSize * 2,
-            behavior: "smooth"
-        });
-
-        if (currentPage * 15 >= data.totalHits) {
+        if(!data.hits || data.hits.length === 0){
             hideLoadMoreButton();
             iziToast.info({
                 title: 'Info',
-                message: 'We\'re sorry, but you\'ve reached the end of search results.',
+                message: "We're sorry, but you've reached the end of search results."
             });
+            return;
+        }
+
+        createGallery(data.hits);
+
+        const firstImage = document.querySelector('.gallery-image');
+        if(firstImage){
+            const imageSize = firstImage.getBoundingClientRect().height;
+            window.scrollBy(
+                {
+                    top: imageSize * 2,
+                    behavior: "smooth"
+                }
+            );
+        }
+
+        if (currentPage * 15 >= data.totalHits) {
+            hideLoadMoreButton();
+            iziToast.info(
+                {
+                title: 'Info',
+                message: "We're sorry, but you've reached the end of search results.",
+            }
+        );
         } 
+    } catch(error){
+        iziToast.error(
+            {
+                title: 'error',
+                message: "An error occurred while loading more images."
+            }
+        );
     } finally {
         hideLoader();
     }
