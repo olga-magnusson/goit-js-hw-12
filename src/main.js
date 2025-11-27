@@ -15,13 +15,15 @@ const loadMoreButton = document.querySelector('.load-more-button');
 form.addEventListener('submit', async event => {
     event.preventDefault();
     
-    const searchQuery = form.elements['search-text'].value.trim();
+    searchQuery = form.elements['search-text'].value.trim();
 
     if (searchQuery === '') {
         iziToast.error({
             title: 'Error',
             message: 'Please enter search parameters!',
         });
+        hideLoader();
+        hideLoadMoreButton();
         return;
     }
     
@@ -34,7 +36,8 @@ form.addEventListener('submit', async event => {
     try {
         const data = await getImagesByQuery(searchQuery, currentPage);
 
-        if (data.hits.length === 0) {
+        if (!data.hits || data.hits.length === 0) {
+            hideLoadMoreButton();
             iziToast.error({
                 title: 'Error',
                 message: 'Sorry, there are no images matching your search query. Please try again!',
@@ -55,6 +58,7 @@ form.addEventListener('submit', async event => {
         }
         
     } catch (error) {
+        hideLoadMoreButton();
         iziToast.error({
             title: 'Error',
             message: 'An error occurred while fetching images. Please try again later.',
