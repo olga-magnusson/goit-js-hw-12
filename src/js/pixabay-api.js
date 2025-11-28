@@ -20,6 +20,6 @@ export async function getImagesByQuery(query, page){
 }
     catch (error){
         console.error('Error fetching images:', error);
-        return [];
+        return {hits:[], totalHits: 0};
     }
 };

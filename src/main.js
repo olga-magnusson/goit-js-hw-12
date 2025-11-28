@@ -94,7 +94,7 @@ loadMoreButton.addEventListener('click', async () => {
             );
         }
 
-        if (currentPage * 15 >= data.totalHits) {
+        if (currentPage * 15 < data.totalHits) {
 
             showLoadMoreButton();
         } else {
