@@ -101,7 +101,7 @@ loadMoreButton.addEventListener('click', async () => {
         }
 
         if (currentPage * 15 >= data.totalHits) {
-            hideLoadMoreButton();
+            showLoadMoreButton();
             iziToast.info(
                 {
                 title: 'Info',
@@ -110,6 +110,7 @@ loadMoreButton.addEventListener('click', async () => {
         );
         } 
     } catch(error){
+        hideLoadMoreButton();
         iziToast.error(
             {
                 title: 'error',
