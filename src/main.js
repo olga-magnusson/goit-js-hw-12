@@ -22,13 +22,11 @@ form.addEventListener('submit', async event => {
             title: 'Error',
             message: 'Please enter search parameters!',
         });
-        hideLoader();
         hideLoadMoreButton();
         return;
     }
     
     currentPage = 1;
-
     clearGallery();
     hideLoadMoreButton();
     showLoader();
@@ -37,28 +35,21 @@ form.addEventListener('submit', async event => {
         const data = await getImagesByQuery(searchQuery, currentPage);
 
         if (!data.hits || data.hits.length === 0) {
-            hideLoadMoreButton();
             iziToast.error({
                 title: 'Error',
                 message: 'Sorry, there are no images matching your search query. Please try again!',
             });
+            hideLoadMoreButton();
             return;
         } 
         
         createGallery(data.hits);
             
         if (currentPage * 15 < data.totalHits){
-            showLoadMoreButton();
-        }else{
-            hideLoadMoreButton();
-                iziToast.info({
-                    title: 'info',
-                    message: "We're sorry, but you've reached the end of search results.",
-                    });
-        }
-        
+            showLoadMoreButton();}
+
     } catch (error) {
-        hideLoadMoreButton();
+        
         iziToast.error({
             title: 'Error',
             message: 'An error occurred while fetching images. Please try again later.',
@@ -90,11 +81,11 @@ loadMoreButton.addEventListener('click', async () => {
 
         createGallery(data.hits);
 
-        const firstImage = document.querySelector('.gallery-image');
-        const lastItem = firstImage.lastElementChild;
-
-        if(lastItem){
-            const imageSize = lastItem.getBoundingClientRect();
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const firstNewItem = galleryItems[galleryItems.length - data.hits.length]
+        
+        if(firstNewItem){
+            const imageSize = firstNewItem.getBoundingClientRect().height;
             window.scrollBy(
                 {
                     top: imageSize * 2,
