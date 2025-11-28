@@ -67,6 +67,8 @@ loadMoreButton.addEventListener('click', async () => {
     showLoader();
     hideLoadMoreButton();
 
+    const oldCount = document.querySelectorAll('.gallery-item').length;
+
     try {
         const data = await getImagesByQuery(searchQuery, currentPage);
         
@@ -82,7 +84,7 @@ loadMoreButton.addEventListener('click', async () => {
         createGallery(data.hits);
 
         const galleryItems = document.querySelectorAll('.gallery-item');
-        const firstNewItem = galleryItems[galleryItems.length - data.hits.length]
+        const firstNewItem = galleryItems[oldCount];
         
         if(firstNewItem){
             const imageSize = firstNewItem.getBoundingClientRect().height;
